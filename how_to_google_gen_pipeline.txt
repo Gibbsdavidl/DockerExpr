@@ -1,6 +1,12 @@
+#################################################################################
 
 # How to build a custom docker image, and run a custom script with
 # Google Genomics Pipelines
+# David L Gibbs
+# dgibbs@systemsbiology.org
+# December 1, 2016
+
+#################################################################################
 
 # 1.  I searched hub.docker.com for 'bioconductor' to get some examples.
 
@@ -36,10 +42,40 @@ gsutil cp  gs://isb-cgc-open/compute/pipelines/samtools-pipeline.json  .
 
 
 # Now we call the genomics pipeline to run it.
+
 gcloud alpha genomics pipelines run \
---pipeline-file gibbsdocker-pipeline.json \
---inputs catter_input=gs://gibbs_bucket_nov162016/catter_input.txt \
---inputs catter_script=gs://gibbs_bucket_nov162016/run_catterplots.R \
---outputs catter_out=gs://gibbs_bucket_nov162016/ \
---logging gs://gibbs_bucket_nov162016/logs/ \
---disk-size catterplots:10
+--pipeline-file gibbsdocker-pipeline.yaml \
+--inputs INPUT_FILE=gs://gibbs_bucket_nov162016/catter_input.txt \
+--inputs INPUT_SCRIPT=gs://gibbs_bucket_nov162016/run_catterplots.R \
+--outputs OUTPUT_FILE=gs://gibbs_bucket_nov162016/ \
+--logging gs://gibbs_bucket_nov162016/logs/
+
+
+# OK, it returns saying
+Running [operations/ELO9_N2LKxir4eeR8czcOiDpiY-7hBQqD3Byb2R1Y3Rpb25RdWV1ZQ].
+
+# We can check it's status with:
+gcloud alpha genomics operations describe operations/ELO9_N2LKxir4eeR8czcOiDpiY-7hBQqD3Byb2R1Y3Rpb25RdWV1ZQ
+
+
+#davidgibbs@pear ~/C/DockerExpr> gcloud alpha genomics operations describe operations/ELO9_N2LKxir4eeR8czcOiDpiY-7hBQqD3Byb2R1Y3Rpb25RdWV1ZQ
+#done: false
+#metadata:
+#  '@type': type.googleapis.com/google.genomics.v1.OperationMetadata
+#  clientId: ''
+#  createTime: '2016-12-01T18:56:54Z'
+#  events: []
+#  labels: {}
+#  projectId: isb-cgc-02-0001
+#  request:
+#    '@type': type.googleapis.com/google.genomics.v1alpha2.RunPipelineRequest
+#    ephemeralPipeline:
+#      description: Run a catter plots script to produce a figure
+#      docker:
+#        cmd: cd /mnt/data && Rscript run_catterplots.R
+#        imageName: hub.docker.com/r/gibbsdavidl/gibbsdocker
+#
+#
+
+
+# Now, we can check our bucket for the output.

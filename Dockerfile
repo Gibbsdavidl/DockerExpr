@@ -4,6 +4,14 @@
 FROM rocker/tidyverse:latest
 MAINTAINER David L Gibbs dgibbs@systemsbiology.org
 
+## Install Software
+## Install some external dependencies.
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends  \
+  libpng-dev \
+&& apt-get clean \
+&& rm -rf /tmp/downloaded_packages/ /tmp/*.rds
+
 ## Install any packages from CRAN
 RUN rm -rf /tmp/*.rds \
 &&  install2.r --error \
@@ -12,7 +20,6 @@ RUN rm -rf /tmp/*.rds \
     mgcv \
     randomForest \
     glmnet \
-    parallel \
     Rcpp \
 && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 

@@ -1,0 +1,52 @@
+{
+	"name": "catterplot",
+	"inputParameters": [
+		{
+			"name": "catter_script",
+			"localCopy": {
+				"path": "run_catterplots.R",
+				"disk": "catterplot"
+			}
+		},
+		{
+			"name": "catter_input",
+			"localCopy": {
+				"path": "catter_input.txt",
+				"disk": "catterplot"
+			}
+		}
+	],
+	"outputParameters": [
+		{
+			"name": "catter_out",
+			"localCopy": {
+				"path": "catter_out.png",
+				"disk": "catterplot"
+			}
+		}
+	],
+	"resources": {
+		"zones": [
+			"us-central1-a",
+			"us-central1-b",
+			"us-central1-c",
+			"us-central1-f",
+			"us-east1-b",
+			"us-east1-c",
+			"us-east1-d"
+		],
+		"disks": [
+			{
+				"name": "catterplot",
+				"autoDelete": true,
+				"mountPoint": "/catterplot"
+			}
+		],
+		"minimumCpuCores": 1,
+		"minimumRamGb": 2
+	},
+	"docker": {
+		"imageName": "hub.docker.com/r/gibbsdavidl/gibbsdocker",
+		"cmd": "cd /catterplot && Rscript run_catterplots.R"
+	}
+}

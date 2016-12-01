@@ -14,4 +14,32 @@
 # -- changes the R package installs
 # -- adding my own package install from my github repo
 
-4.
+# 4. Then I'm going to build the image
+# https://docs.docker.com/engine/getstarted/step_four/
+docker build -t gibbsdocker ~/Code/DockerExpr/
+
+# this builds the image called gibbsdocker from the Dockerfile found in the
+# Code/DockerExpr directory.
+
+# 6. Make a repo, and push it to the docker repo.
+docker tag dockerexpr gibbsdavidl/gibbsdocker:latest
+docker images
+docker login
+docker push gibbsdavidl/gibbsdocker
+
+# 7. Now I'm going to edit the example pipeline file
+gsutil cp  gs://isb-cgc-open/compute/pipelines/samtools-pipeline.json  .
+-- renamed to gibbsdocker-pipeline.json
+-- changed 'name' to CatterPlots
+-- added input for getting the script
+-- changed the inputs and outputs
+
+
+# Now we call the genomics pipeline to run it.
+gcloud alpha genomics pipelines run \
+--pipeline-file gibbsdocker-pipeline.json \
+--inputs catter_input=gs://gibbs_bucket_nov162016/catter_input.txt \
+--inputs catter_script=gs://gibbs_bucket_nov162016/run_catterplots.R \
+--outputs catter_out=gs://gibbs_bucket_nov162016/ \
+--logging gs://gibbs_bucket_nov162016/logs/ \
+--disk-size catterplots:10

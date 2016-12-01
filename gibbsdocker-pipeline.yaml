@@ -28,5 +28,5 @@ resources:
     sizeGb: 100
     mountPoint: /mnt/data
 docker:
-  imageName: hub.docker.com/r/gibbsdavidl/gibbsdocker
+  imageName: gibbsdavidl/gibbsdocker
   cmd: "cd /mnt/data && Rscript run_catterplots.R"

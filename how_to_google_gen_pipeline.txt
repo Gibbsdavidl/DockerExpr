@@ -1,0 +1,17 @@
+
+# How to build a custom docker image, and run a custom script with
+# Google Genomics Pipelines
+
+# 1.  I searched hub.docker.com for 'bioconductor' to get some examples.
+
+# 2. We can build off another defined file
+
+# 3. I'm going to revise this docker file:
+# https://github.com/NESCent/popgen-docker
+# I'm going to edit that file, by:
+# -- changing the Maintainer.
+# -- remove the gsl install part.
+# -- changes the R package installs
+# -- adding my own package install from my github repo
+
+4.
